@@ -103,13 +103,16 @@ cbFormat <- function (n, salidaLista = FALSE) {
     
     ## single data frame TODO ESTO REPLICA LA MATRIZ... ver si se puede no replicar tanto
     L <- length (mat)
-    res <- mat[[L]]
-    for (i in (L-1):1) {
-        print (i)
-        prev <- res$prev
-        res <- res[,-1]
-        res <- cbind (mat[[i]][prev,], res)
+    res <- mat[[L]]  ## ultimo elemento de la lista
+    if(!L == 1) {    ## si la lista resultado es de un elemento, en este punto ya no quedan mas elementos que procesar
+        for (i in (L-1):1) {
+            print (i)
+            prev <- res$prev
+            res <- res[,-1]
+            res <- cbind (mat[[i]][prev,], res)
+        }
     }
+    res$prev <- NULL
     rownames (res) <- NULL
     
     if (salidaLista) {
