@@ -50,6 +50,8 @@ cb.query.models <- function (tags,
     res <- as.data.frame (res, stringsAsFactors = FALSE)
     
     ## parse parameters
+    res[,"tag.simple"] <- sapply( res$tag, function(x) {unlist(strsplit(x, "/"))[2]})  ## tag simplificado
+    
     res[,"par"] <- res[,"par0"]
 
     res[res$par == "id",               "par"] <- NA
@@ -60,7 +62,7 @@ cb.query.models <- function (tags,
     res[,"par"] <- sub  (".type$",            "", res$par)  ## solo el ultimo
     res[,"par"] <- gsub ("items.properties.", "", res$par)
 
-    res <- res[,c ("tag", "par", "par0")]  ## CAMBIAR ESTO PARA QUE NO ESTE EL PAR0
-    #res <- res[,c ("tag", "par")]
+    #res <- res[,c ("tag", "par", "par0")]  ## CAMBIAR ESTO PARA QUE NO ESTE EL PAR0
+    res <- res[,c ("tag", "tag.simple", "par")]
     res <- res[!is.na (res$par),]
 }
