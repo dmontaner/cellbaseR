@@ -68,8 +68,10 @@ cb.query.models <- function (tags,
         else FALSE
     }
     res[,"is.final"] <- apply(res[,c("tag","par")], 1, f)  ## clasificar los parametros en finales y no finales
-        
+    
+    res[,"level"] <- sapply( res$par, function(x) { length(unlist(strsplit(x, "[.]"))) })  ## nivel de anidamiento 
+    
     #res <- res[,c ("tag", "par", "par0")]  ## CAMBIAR ESTO PARA QUE NO ESTE EL PAR0
-    res <- res[,c ("tag", "tag.simple", "par", "is.final")]
+    res <- res[,c ("tag", "tag.simple", "par", "is.final", "level")]
     res <- res[!is.na (res$par),]
 }
