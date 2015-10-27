@@ -58,9 +58,10 @@ cb.query.models <- function (tags,
     res[grep ("items.type$", res$par), "par"] <- NA
     res[grep ("items.id$",   res$par), "par"] <- NA
     
-    res[,"par"] <- sub  ("^properties.",      "", res$par)  ## solo el primero por ahora
+    #res[,"par"] <- sub  ("^properties.",      "", res$par)  ## solo el primero por ahora
     res[,"par"] <- sub  (".type$",            "", res$par)  ## solo el ultimo
     res[,"par"] <- gsub ("items.properties.", "", res$par)
+    res[,"par"] <- gsub  ("properties.",      "", res$par)
 
     f <- function(x) {
         n <- grep(paste("^", x[2], sep=""), res$par[res$tag == x[1]])
