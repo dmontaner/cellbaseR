@@ -38,7 +38,7 @@ cb.build.query <- function (ids,
     
     ## info
     if (checkpars){
-        check.model.params (info)
+        check.model.params (tag, info)
     }
     info <- paste (info, collapse = ",")
     
@@ -59,9 +59,36 @@ cb.build.query <- function (ids,
 ##                 info = c ("transcripts.id", "transcripts.exon.id"),
 ##                 tag = "feature/gene")
 
-check.model.params <- function (info, trueval = cbPar ("infopar")[,"par"]) {
-    nota <- !info %in% trueval
-    if (any (nota)) {
-        stop (info[nota], "is not a valid parameter")
+check.model.params <- function (tag, info) {
+    #trueval <- cbPar("infopar")[cbPar("infopar")$tag == tag,]
+    trueval <- cbPar("infopar")
+    trueval <- trueval[trueval$tag == tag,]
+    invalid <- !info %in% trueval[trueval$is.final == TRUE, "par"]   
+    
+    if (any (invalid)) {
+        stop (sapply(info[invalid], function(x) paste(x, "is not a valid parameter\n")))
     }
-}        
+    
+    #info_level <- sapply(info, function(x) trueval[trueval$par==x, "level"])
+    info_sep <- strsplit(info, "[.]")
+    levels <- sapply(info_sep, length)
+    
+    M <- max(levels)
+    if(!M == 1) {
+        
+        for(i in 1:(M-1)) {
+            info_sep[levels == i] <- NULL  ## remove level i
+            levels <- levels[!levels == i]
+            
+            compare <- sapply(info_sep, function(x) x[i])  ## check that all params have the same root
+            
+            if(!length(unique(compare)) == 1) {
+                stop ("Different groups of parameters: ", paste(unique(compare), collapse = ", "), 
+                      "\n  Please use only one group in each query.")
+            }
+        }
+    }
+    
+    #return("OK")
+}
+
