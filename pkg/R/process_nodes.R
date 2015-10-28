@@ -65,6 +65,9 @@ cbFormat <- function (n, salidaLista = FALSE) {
     parar <- FALSE
     mat <- list ()
     
+    info.names <- names(unlist(n))
+    info.names <- unique(info.names)
+    
     row.pos <- rep (1, times = length (n))  ## seguramente se inicie para cuadrar con los IDS DE la query REVISAR
     
     while (!parar) {
@@ -114,6 +117,7 @@ cbFormat <- function (n, salidaLista = FALSE) {
     }
     res$prev <- NULL
     rownames (res) <- NULL
+    names (res) <- info.names
     
     if (salidaLista) {
         return (list (mat = mat, res = res))  # CAMBIAR LA NOTACION DE MAT y RES
