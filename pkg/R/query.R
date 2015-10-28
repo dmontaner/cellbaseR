@@ -65,3 +65,31 @@ check.model.params <- function (info, trueval = cbPar ("infopar")[,"par"]) {
         stop (info[nota], "is not a valid parameter")
     }
 }        
+
+
+##' Groups of identifiers.
+
+chunk.ids <- function (ids, N = 100) {    
+    
+    ids.chunk <- list()  
+    
+    ## number of groups
+    rep <- (length(ids) / N)    
+    if(length(ids) %% N != 0)
+        rep <- rep + 1    
+    
+    for(i in 1:rep) {
+        start <- (i-1) * N + 1
+        end <- i * N
+        
+        if(end > length(ids)) {
+            end <- length(ids)
+        }
+        
+        ids.chunk <- c(ids.chunk, list(ids[start:end]))
+    }
+    
+    return(ids.chunk)
+}
+
+
