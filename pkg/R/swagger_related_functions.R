@@ -23,7 +23,8 @@ get.swagger.info <- function (url = cbPar ("url"),
                               swaggerPath = "swagger.json") {
     
     urlSwagger <- swagger.url (url = url, swaggerPath = swaggerPath)
-    jsn <- fromJSON (urlSwagger, simplifyVector = FALSE)
+    #jsn <- fromJSON (urlSwagger, simplifyVector = FALSE)
+    jsn <- getResult(urlSwagger, simplifyVector = FALSE)
     
     ## names (jsn)  ## "swagger"     "info"        "basePath"    "tags"        "schemes"     "paths"       "definitions"
     ## "tags" & "definitions" may be interesting at some point
