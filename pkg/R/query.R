@@ -101,7 +101,8 @@ cb.run.query <- function (ids) {
         id <- paste (id, collapse = ",")
         url <- cb.build.query(ids = id)
         
-        jsn <- fromJSON (url, simplifyVector = FALSE, flatten = TRUE)
+        #jsn <- fromJSON (url, simplifyVector = FALSE, flatten = TRUE)
+        jsn <- getResult(url, simplifyVector = FALSE, flatten = TRUE)
         jsn <- jsn[["response"]]        
         nodo <- lapply (jsn, function (x) x[["result"]][[1]])
         
