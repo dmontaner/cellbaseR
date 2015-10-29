@@ -34,7 +34,7 @@ cb.build.query <- function (ids,
     
     ## ids
     ## eliminate whites ???
-    ids <- paste (ids, collapse = ",")
+    #ids <- paste (ids, collapse = ",")
     
     ## info
     if (checkpars){
@@ -91,5 +91,25 @@ chunk.ids <- function (ids, N = 100) {
     
     return(ids.chunk)
 }
+
+
+cb.run.query <- function (ids) {
+    res <- NULL
+    ids <- chunk.ids (ids)
+    
+    for(id in ids) {
+        id <- paste (id, collapse = ",")
+        url <- cb.build.query(ids = id)
+        
+        jsn <- fromJSON (url, simplifyVector = FALSE, flatten = TRUE)
+        jsn <- jsn[["response"]]        
+        nodo <- lapply (jsn, function (x) x[["result"]][[1]])
+        
+        res <- c(res, nodo)
+    }
+    
+    res <- cbFormat (nodo)
+}
+
 
 
