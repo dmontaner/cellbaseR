@@ -9,14 +9,14 @@
 ##' @return List of information returned by the call.
 ##' 
 
-getResult <- function(url, simplifyVector = FALSE, flatten = FALSE) {
+getResult <- function(url, ...) {
     
     result <- tryCatch ({
         getURL(url)
     }, error = function(w) {"Request to Cellbase web service failed."})
     
     if(!is.null(result)) {
-        parsed_result <- try (fromJSON (result, simplifyVector = simplifyVector, flatten = flatten))
+        parsed_result <- try (fromJSON (result, ...))
         
         if("try-error" %in% class(parsed_result)) parsed_result <- NULL
     }    
