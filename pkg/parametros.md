@@ -1,8 +1,7 @@
 
-Faltaria:
+__.$ref__ 
 
-- Filtrar los nodos no finales de todos los parametros que devuelve la funcion __cb.query.models__
+No hay ningún operador "$ref" de proyección implementado actualmente en CellBase.
+Por lo general, lo que se pone en el parámetro "include" se le pasa directamente a la consulta de Mongo como operador de proyección para que devuelva únicamente los atributos que son de interés. El operador $, es un operador de proyección. Sin embargo, actualmente no se procesa en CellBase, lo que significa que no se hace nada con él.
 
-- Revisar la compatibilidad de todas las opciones seleccionadas por el usuario.
-  Si no son compatibles separarlas en grupos que si lo sean. 
-
+http://bioinfodev.hpc.cam.ac.uk/cellbase/webservices/rest/v3/hsapiens/feature/protein/ALBU_HUMAN/info?include=reference.$ref
