@@ -57,6 +57,8 @@ cb.query.models <- function (tags,
     res[res$par == "id",               "par"] <- NA
     res[grep ("items.type$", res$par), "par"] <- NA
     res[grep ("items.id$",   res$par), "par"] <- NA
+    res[grep ("ref$",        res$par), "par"] <- NA   ## todos los que acaban en '.$ref'
+    res[grep ("schema",      res$par), "par"] <- NA   ## todos los que contienen 'schema'
     
     #res[,"par"] <- sub  ("^properties.",      "", res$par)  ## solo el primero por ahora
     res[,"par"] <- sub  (".type$",            "", res$par)  ## solo el ultimo
