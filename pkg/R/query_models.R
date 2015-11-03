@@ -74,7 +74,15 @@ cb.query.models <- function (tags,
     
     res[,"level"] <- sapply( res$par, function(x) { length(unlist(strsplit(x, "[.]"))) })  ## nivel de anidamiento 
     
+    res.group <- function(x) {
+        x <- unlist (strsplit (x, "[.]"))
+        L <- length(x) - 1 
+        if(!L == 0) x[L]
+        else NA
+    }
+    res[,"group"] <- sapply (res$par, res.group)   ## group parameters
+    
     #res <- res[,c ("tag", "par", "par0")]  ## CAMBIAR ESTO PARA QUE NO ESTE EL PAR0
-    res <- res[,c ("tag", "tag.simple", "par", "is.final", "level")]
+    res <- res[,c ("tag", "tag.simple", "par", "is.final", "level", "group")]
     res <- res[!is.na (res$par),]
 }
