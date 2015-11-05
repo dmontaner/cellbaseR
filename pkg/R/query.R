@@ -93,13 +93,17 @@ chunk.ids <- function (ids, N = 100) {
 }
 
 
-cb.run.query <- function (ids) {
+cbQuery <- function (ids, tag, attributes) {
     res <- NULL
     ids <- chunk.ids (ids)
     
-    for(id in ids) {
-        id <- paste (id, collapse = ",")
-        url <- cb.build.query(ids = id)
+    params <- cbPar("infopar")[,c("tag", "tag.simple")]
+    tag <- unique(params$tag[params$tag.simple == tag])
+    
+    for(i in 1:length(ids)) {
+        
+        id <- paste (ids[[i]], collapse = ",")
+        url <- cb.build.query(ids = id, tag = tag, info = attributes)
         
         #jsn <- fromJSON (url, simplifyVector = FALSE, flatten = TRUE)
         jsn <- getResult(url, simplifyVector = FALSE, flatten = TRUE)
@@ -109,7 +113,9 @@ cb.run.query <- function (ids) {
         res <- c(res, nodo)
     }
     
-    res <- cbFormat (nodo)
+    res <- cbFormat (res)
+    
+    return(res)
 }
 
 
