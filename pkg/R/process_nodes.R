@@ -65,6 +65,9 @@ cbFormat <- function (n, salidaLista = FALSE) {
     parar <- FALSE
     mat <- list ()
     
+    info.names <- names(unlist(n))
+    info.names <- unique(info.names)
+    
     row.pos <- rep (1, times = length (n))  ## seguramente se inicie para cuadrar con los IDS DE la query REVISAR
     
     while (!parar) {
@@ -103,14 +106,18 @@ cbFormat <- function (n, salidaLista = FALSE) {
     
     ## single data frame TODO ESTO REPLICA LA MATRIZ... ver si se puede no replicar tanto
     L <- length (mat)
-    res <- mat[[L]]
-    for (i in (L-1):1) {
-        print (i)
-        prev <- res$prev
-        res <- res[,-1]
-        res <- cbind (mat[[i]][prev,], res)
+    res <- mat[[L]]  ## ultimo elemento de la lista
+    if(!L == 1) {    ## si la lista resultado es de un elemento, en este punto ya no quedan mas elementos que procesar
+        for (i in (L-1):1) {
+            print (i)
+            prev <- res$prev
+            res <- res[,-1]
+            res <- cbind (mat[[i]][prev,], res)
+        }
     }
+    res$prev <- NULL
     rownames (res) <- NULL
+    names (res) <- info.names
     
     if (salidaLista) {
         return (list (mat = mat, res = res))  # CAMBIAR LA NOTACION DE MAT y RES
