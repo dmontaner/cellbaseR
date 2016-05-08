@@ -51,17 +51,39 @@ cb.query.models <- function (tags,
     res <- as.data.frame (res, stringsAsFactors = FALSE)
     
     ## parse parameters
+    res[,"tag.simple"] <- sapply( res$tag, function(x) {unlist(strsplit(x, "/"))[2]})  ## tag simplificado
+    
     res[,"par"] <- res[,"par0"]
 
     res[res$par == "id",               "par"] <- NA
     res[grep ("items.type$", res$par), "par"] <- NA
     res[grep ("items.id$",   res$par), "par"] <- NA
+    res[grep ("ref$",        res$par), "par"] <- NA   ## todos los que acaban en '.$ref'
+    res[grep ("schema",      res$par), "par"] <- NA   ## todos los que contienen 'schema'
     
-    res[,"par"] <- sub  ("^properties.",      "", res$par)  ## solo el primero por ahora
+    #res[,"par"] <- sub  ("^properties.",      "", res$par)  ## solo el primero por ahora
     res[,"par"] <- sub  (".type$",            "", res$par)  ## solo el ultimo
     res[,"par"] <- gsub ("items.properties.", "", res$par)
+    res[,"par"] <- gsub  ("properties.",      "", res$par)
 
-    res <- res[,c ("tag", "par", "par0")]  ## CAMBIAR ESTO PARA QUE NO ESTE EL PAR0
-    #res <- res[,c ("tag", "par")]
+    f <- function(x) {
+        n <- grep(paste("^", x[2], sep=""), res$par[res$tag == x[1]])
+        if(length(n) == 1) TRUE 
+        else FALSE
+    }
+    res[,"is.final"] <- apply(res[,c("tag","par")], 1, f)  ## clasificar los parametros en finales y no finales
+    
+    res[,"level"] <- sapply( res$par, function(x) { length(unlist(strsplit(x, "[.]"))) })  ## nivel de anidamiento 
+    
+    res.group <- function(x) {
+        x <- unlist (strsplit (x, "[.]"))
+        L <- length(x) - 1 
+        if(!L == 0) x[L]
+        else NA
+    }
+    res[,"group"] <- sapply (res$par, res.group)   ## group parameters
+    
+    #res <- res[,c ("tag", "par", "par0")]  ## CAMBIAR ESTO PARA QUE NO ESTE EL PAR0
+    res <- res[,c ("tag", "tag.simple", "par", "is.final", "level", "group")]
     res <- res[!is.na (res$par),]
 }
