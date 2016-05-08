@@ -43,7 +43,8 @@ cb.query.models <- function (tags,
         ## http://HOST_URL/{version}/{species}/{category}/{subcategory}/model
         link <- paste (url, version, species, tag, resource, sep = "/")
         print (link)
-        jsn <- fromJSON (link, simplifyVector = TRUE, flatten = TRUE)
+        #jsn <- fromJSON (link, simplifyVector = TRUE, flatten = TRUE)
+        jsn <- getResult(link, simplifyVector = TRUE, flatten = TRUE)
         par0 <- names (jsn[["response"]])
         res <- rbind (res, cbind (tag = tag, par0 = par0))
     }
