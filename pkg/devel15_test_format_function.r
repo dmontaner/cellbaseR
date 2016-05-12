@@ -31,6 +31,13 @@ cb.build.query (ids = genes, info = "cosa", tag = mitag)   ## e
 
 ## TODO ESTEPROCESO HAY QUE EMPEZAR A EMPAQUETARLO YA para bajar la query
 
+jsn0 <- fromJSON (miurl)
+jsn0 <- jsn0[["response"]]
+class (jsn0)
+sapply (jsn0, class)
+jsn0[['id']]
+class (jsn0[['result']])
+
 jsn <- fromJSON (miurl, simplifyVector = FALSE, flatten = TRUE)
 jsn <- jsn[["response"]]
 length (jsn)

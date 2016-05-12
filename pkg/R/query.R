@@ -34,7 +34,7 @@ cb.build.query <- function (ids,
     
     ## ids
     ## eliminate whites ???
-    #ids <- paste (ids, collapse = ",")
+    ids <- paste (ids, collapse = ",")
     
     ## info
     if (checkpars){
@@ -62,7 +62,7 @@ cb.build.query <- function (ids,
 check.model.params <- function (info, trueval = cbPar ("infopar")[,"par"]) {
     nota <- !info %in% trueval
     if (any (nota)) {
-        stop (info[nota], "is not a valid parameter")
+        stop (info[nota], " is not a valid parameter")
     }
 }        
 
